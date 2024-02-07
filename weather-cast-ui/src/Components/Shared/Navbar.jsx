@@ -1,8 +1,12 @@
 
 import { motion } from "framer-motion"
+import { useContext } from "react"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../Authentication/Authprovider"
 
 function Navbar() {
+
+  const {user} = useContext(AuthContext)
   
   const popUp = {
     initial:{borderColor: "#F84E4500"},
@@ -23,8 +27,6 @@ function Navbar() {
   const navlinks = (
   <motion.div initial={{borderColor: "transparent"}} animate={{}} transition={{ delay:1.6}} className="flex flex-col lg:flex-row gap-5 border-2  px-2 border-[#F84E45]">
     <motion.div variants={popUp} initial='initial' whileInView='animate' transition={{ delay:1.8}}  className={navClass}><motion.div variants={dropDown} initial='initial' animate='animate'  transition={{duration:.5, delay:1}}><Link  href='/'>Home</Link></motion.div></motion.div>
-    <motion.div variants={popUp} initial='initial' whileInView='animate' transition={{ delay:2}} className={navClass}><motion.div variants={dropDown} initial='initial' animate='animate' transition={{duration:.7, delay:1}}><Link  href='/'>Categories</Link></motion.div></motion.div>
-    <motion.div variants={popUp} initial='initial' whileInView='animate' transition={{ delay:2.2}} className={navClass}><motion.div variants={dropDown} initial='initial' animate='animate' transition={{duration:.9, delay:1}}><Link  href='/'>About Us</Link></motion.div></motion.div>    
   </motion.div>)
 
 
@@ -47,7 +49,10 @@ function Navbar() {
     </ul>
   </div>
   <div className="navbar-end">
-    <Link  href='/' ><motion.span initial={{backgroundColor: '#F84E4500'}} animate={{backgroundColor:'#F84E45'}} transition={{delay:2.8}} className="btn bg-[#F84E45] text-white hover:shadow-2xl hover:shadow-[#F84E45] hover:bg-[#F84E45]">Log In</motion.span></Link>
+    {!user?
+    <Link  to='/logIn' ><motion.span initial={{backgroundColor: '#F84E4500'}} animate={{backgroundColor:'#F84E45'}} transition={{delay:2.8}} className="btn bg-[#F84E45] text-white hover:shadow-2xl hover:shadow-[#F84E45] hover:bg-[#F84E45]">Log In</motion.span></Link>:
+      <div>Hi {user.displayName}</div>
+    }
   </div>
 </motion.div>
   );

@@ -29,7 +29,7 @@ const LandingPage = () => {
                 <input onChange={e=>setCity(e.target.value)} className="w-1/2 border-2 border-black h-[50px] rounded-lg p-2" type="text" placeholder="Search your city" />
                 <button onClick={handleSearch} className="btn bg-[#F84E45] text-white hover:shadow-2xl hover:shadow-[#F84E45] hover:bg-[#F84E45]" >Search</button>
             </div>
-            <div className="bg-gray-200 p-20">
+            <div className="bg-gray-200 p-20 ">
                 <WeatherCard lat={lat} lon={lon} weather={weather}></WeatherCard>
             </div>
         </div>

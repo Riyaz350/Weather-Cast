@@ -6,6 +6,7 @@ import "echarts/i18n/langFR";
 import { CiClock2 } from "react-icons/ci";
 import CountUp from 'react-countup';
 import { motion } from "framer-motion"
+import Users from "./Users";
 
 const WeatherCard = (weather)=>{
     
@@ -111,9 +112,9 @@ const WeatherCard = (weather)=>{
             
         
             return(
-                <div className="max-w-5xl mx-auto shadow-lg rounded-lg ">
-                    {weather.weather ? 
+                <div className="max-w-7xl mx-auto shadow-lg rounded-lg ">
                         <div className="lg:grid grid-cols-4 ">
+                    {weather.weather ? 
                             <div className="col-span-3 bg-white rounded-lg p-5">
                                 <div className="lg:grid  grid-cols-4">
                                     <div className="col-span-1 text-center text-2xl">
@@ -122,7 +123,7 @@ const WeatherCard = (weather)=>{
                                     <div className="col-span-3  flex flow-row md:block">
                                         <div className="space-y-10">
                                             <div className="text-lg font-medium text-center">{dayOfWeek}   {date}</div>
-                                            <div className={`${window.innerWidth == 1024 ? 'lg:text-[150px]': 'lg:text-[200px]'} flex text-2xl md:text-5xl   font-light text-gray-500  items-center justify-center gap-10`}>
+                                            <div className={`${window.innerWidth == 1024 ? 'lg:text-[150px]': 'lg:text-[200px]'} flex text-2xl md:text-5xl md:flex-row flex-col  font-light text-gray-500  items-center justify-center gap-10`}>
                                                 <motion.h1 initial={{x:-50}} whileInView={{x:0}} transition={{duration:1.2}}><CountUp end={Math.floor(weather.weather.main.temp - 273.15)} duration={2.5} /><span>°</span>C</motion.h1>
                                                 <div>
                                                 <h1 className="text-2xl flex items-center gap-3"><IoWaterOutline />{weather.weather.main.humidity}</h1>
@@ -137,21 +138,25 @@ const WeatherCard = (weather)=>{
                                 <div className="grid grid-cols-2 lg:grid-cols-4 justify-between  gap-2 text-center">
                                     {hourlyTemp?.slice(0,8).map((temp,index)=>
                                             <motion.div initial={{y:40, opacity:0}} whileInView={{y:0, opacity:1}} transition={{duration:1}} key={index} className="rounded-lg  flex flex-col shadow-lg p-5">
-                                                <h1 className="text-3xl">{temp}<span>°</span>C</h1>
+                                                <h1 className="text-sm  md:text-3xl">{temp}<span>°</span>C</h1>
                                                 <h1 className="flex items-center justify-center"><CiClock2 />{hourlyTimes[index]}</h1>
                                             </motion.div>
                                         )}
                                 </div>
                                 {/* <ReactECharts option={option} style={{ height: 400 }} opts={{ locale: 'FR' }}/>; */}
+                            </div> :
+                            <div className="col-span-3 bg-white rounded-lg p-5">
+                            <h1 className="text-5xl text-center">Please search your city</h1>
+
                             </div>
+                            }
                             <div className="col-span-1">
-                                <h1>hello</h1>
+                                <Users></Users>
                             </div>
-                        </div>  :
-                    <div className="">
-                        <h1 className="text-5xl text-center">Please search your city</h1>
+                        </div>  
+                    <div className="flex justify-between">
                     </div>  
-                }
+                
                 </div>
             )
         
