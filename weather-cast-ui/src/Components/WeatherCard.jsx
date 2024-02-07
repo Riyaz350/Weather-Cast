@@ -1,19 +1,55 @@
 import { useEffect, useState } from "react";
 import { IoWaterOutline } from "react-icons/io5";
 import { MdOutlineAir } from "react-icons/md";
+import ReactECharts from 'echarts-for-react';
+import "echarts/i18n/langFR";
 
 const WeatherCard = (weather)=>{
+    
+      
     const [date, setDate] = useState('')
     const [cloudy, setCloudy] = useState('')
     const [dayOfWeek, setDayOfWeek] = useState('')
     const [hourlyData, setHourlyData] = useState('')
+    const [weeksData, setWeeksData] = useState('')
+    const [hourlyTimes, setHourlyTimes] = useState('')
+    const [hourlyTemp, setHourlyTemp] = useState([])
     const lat = weather.lat
     const lon = weather.lon
     const hourly = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
+    // const weekly = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=16&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
 
-    console.log(weather.weather)
+    
+    console.log(hourlyTemp)
+
+    const option = {
+        title: {
+          text: 'Todays Overview'
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {},
+                dataZoom: {},
+                restore: {}
+            }
+        },
+        tooltip: {},
+        legend: {
+          data:['销量']
+        },
+        xAxis: {
+          data: hourlyTimes?.slice(0,7)
+        },
+        yAxis: {},
+        series: [{
+          name: '销量',
+          type: 'line',
+          data: hourlyTemp?.slice(0,7)
+        }]
+      };
+
     useEffect(()=>{
-        if(weather.weather && weather.lat && weather.lon){
+        if(weather?.weather && weather?.lat && weather?.lon){
 
             const cloud = weather?.weather?.clouds.all
             if(cloud <= 10){
@@ -45,11 +81,31 @@ const WeatherCard = (weather)=>{
 
             fetch(`${hourly}`)
             .then(res=>res.json())
-            .then(res=> setHourlyData(res))
+            .then(res=> {setHourlyData(res)
+            
+                const times = res?.list?.map(entry => {
+                    const dateTime = new Date(entry.dt_txt);
+                    const hours = dateTime.getHours().toString().padStart(2, '0');
+                    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+                    return `${hours}:${minutes}`
+                })
+                setHourlyTimes(times)
+                const temperatures = res?.list?.map(item => Math.floor(item.main.temp - 273.15))
+                setHourlyTemp(temperatures)
+                })
+
+
+
+            // fetch(`${weekly}`)
+            // .then(res=>res.json())
+            // .then(res=> {
+            //     console.log(res)
+            //     setWeeksData(res)
+            // })
 
         }
-    },[weather.weather, hourly, weather.lon, weather.lat])
-    
+    },[weather.weather, hourly, weather.lon, weather.lat, hourlyData?.list])
+            
         
             return(
                 <div className="max-w-5xl mx-auto shadow-lg rounded-lg ">
@@ -74,6 +130,15 @@ const WeatherCard = (weather)=>{
                                         </div>
                                     </div>
                                 </div>
+                                <div className="grid grid-cols-2 lg:grid-cols-4 justify-between  gap-2 text-center">
+                                    {hourlyTemp?.slice(0,8).map((temp,index)=>
+                                            <div key={index} className="flex flex-col shadow-lg p-5">
+                                                <h1 className="text-3xl">{temp}<span>°</span>C</h1>
+                                                <h1 className="">{hourlyTimes[index]}</h1>
+                                            </div>
+                                        )}
+                                </div>
+                                {/* <ReactECharts option={option} style={{ height: 400 }} opts={{ locale: 'FR' }}/>; */}
                             </div>
                             <div className="col-span-1">
                                 <h1>hello</h1>
