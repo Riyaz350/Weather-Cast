@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoWaterOutline } from "react-icons/io5";
 import { MdOutlineAir } from "react-icons/md";
-import ReactECharts from 'echarts-for-react';
-import "echarts/i18n/langFR";
 import { CiClock2 } from "react-icons/ci";
 import CountUp from 'react-countup';
 import { motion } from "framer-motion"
@@ -15,42 +13,11 @@ const WeatherCard = (weather)=>{
     const [cloudy, setCloudy] = useState('')
     const [dayOfWeek, setDayOfWeek] = useState('')
     const [hourlyData, setHourlyData] = useState('')
-    const [weeksData, setWeeksData] = useState('')
     const [hourlyTimes, setHourlyTimes] = useState('')
     const [hourlyTemp, setHourlyTemp] = useState([])
     const lat = weather.lat
     const lon = weather.lon
     const hourly = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
-    // const weekly = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=16&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
-
-    
-    console.log(hourlyTemp)
-
-    const option = {
-        title: {
-          text: 'Todays Overview'
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {},
-                dataZoom: {},
-                restore: {}
-            }
-        },
-        tooltip: {},
-        legend: {
-          data:['销量']
-        },
-        xAxis: {
-          data: hourlyTimes?.slice(0,7)
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'line',
-          data: hourlyTemp?.slice(0,7)
-        }]
-      };
 
     useEffect(()=>{
         if(weather?.weather && weather?.lat && weather?.lon){
@@ -97,23 +64,13 @@ const WeatherCard = (weather)=>{
                 const temperatures = res?.list?.map(item => Math.floor(item.main.temp - 273.15))
                 setHourlyTemp(temperatures)
                 })
-
-
-
-            // fetch(`${weekly}`)
-            // .then(res=>res.json())
-            // .then(res=> {
-            //     console.log(res)
-            //     setWeeksData(res)
-            // })
-
         }
     },[weather.weather, hourly, weather.lon, weather.lat, hourlyData?.list])
             
         
             return(
                 <div className="max-w-7xl mx-auto shadow-lg rounded-lg ">
-                        <div className="lg:grid grid-cols-4 ">
+                        <div className={` `}>
                     {weather.weather ? 
                             <div className="col-span-3 bg-white rounded-lg p-5">
                                 <div className="lg:grid  grid-cols-4">
@@ -143,7 +100,6 @@ const WeatherCard = (weather)=>{
                                             </motion.div>
                                         )}
                                 </div>
-                                {/* <ReactECharts option={option} style={{ height: 400 }} opts={{ locale: 'FR' }}/>; */}
                             </div> :
                             <div className="col-span-3 text-3xl text-center bg-white rounded-lg p-5">
                                 <h1>Please Search Your City/Country</h1>

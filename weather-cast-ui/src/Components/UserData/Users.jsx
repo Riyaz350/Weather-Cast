@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import useUserInfo from "../../Hooks/useUserInfo";
 import { AuthContext } from "../../Authentication/Authprovider";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const Users = () => {
     const axiosPublic = useAxiosPublic()
@@ -14,9 +15,28 @@ const Users = () => {
     const isUser = users.find(userr=> userr.email == user?.email)
       
 
-    // if(user){
-        
-    // }
+    const handleDelete=(mail)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosPublic.delete(`/users/${mail}`)
+        .then(res=>{
+            if(res.data.deletedCount>0){
+                Swal.fire({position: "top-end", icon: "success", title: "User Deleted", showConfirmButton: false, timer: 1500});
+                refetch()
+            }
+        })
+        }
+      });
+      
+    }
 
     useEffect(() => {
       const intervalId = setInterval(() => {
@@ -59,6 +79,7 @@ const Users = () => {
                             <th>Name</th>
                             <th>Join Date</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,6 +89,7 @@ const Users = () => {
                       <th>{user?.name}</th>
                       <th>{user?.joinDate}</th>
                       <th className={`${user?.status === 'Online' ? 'text-green-500' : user?.status === 'Offline' ? 'text-red-500' : 'text-cyan-500'}`}>{user?.status}</th>
+                      <th onClick={()=>handleDelete(user?.email)} className="btn bg-[#F84E45] text-white hover:shadow-lg hover:shadow-[#F84E4540] hover:bg-[#F84E45]">Delete</th>
                   </tr>)
                     }
                     </tbody>
