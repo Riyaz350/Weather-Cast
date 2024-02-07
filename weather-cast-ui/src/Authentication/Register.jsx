@@ -4,11 +4,11 @@ import { Link,  useNavigate } from "react-router-dom";
 import {  updateProfile } from "firebase/auth";
 import { AuthContext } from "./Authprovider";
 import auth from "../../firebase.config";
-// import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 
 const Register = () => {
-    // const axiosPublic = useAxiosPublic()
+    const axiosPublic = useAxiosPublic()
     const [name, setName] =useState("")
     const [email, setEmail] =useState("")
     const [password, setPassword] = useState("")
@@ -36,9 +36,9 @@ const handleEmailRegister = e=>{
         e.target.reset()
         Swal.fire({position: "top-end", icon: "success", title: "Please Sign In again", showConfirmButton: false, timer: 1500});
 
-        // const userInfo = {email:email, name:name, photo:photo,  role:'user', owned: '', acceptedAgreement:''}
-        // axiosPublic.post('/users', userInfo )
-        // .then()
+        const userInfo = {email:email, name:name,   status:'offline'}
+        axiosPublic.post('/users', userInfo )
+        .then()
         
         logOut()
         .then(result=>console.log(result))

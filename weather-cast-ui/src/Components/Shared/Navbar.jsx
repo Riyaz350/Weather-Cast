@@ -6,7 +6,7 @@ import { AuthContext } from "../../Authentication/Authprovider"
 
 function Navbar() {
 
-  const {user} = useContext(AuthContext)
+  const {user, logOut} = useContext(AuthContext)
   
   const popUp = {
     initial:{borderColor: "#F84E4500"},
@@ -29,6 +29,9 @@ function Navbar() {
     <motion.div variants={popUp} initial='initial' whileInView='animate' transition={{ delay:1.8}}  className={navClass}><motion.div variants={dropDown} initial='initial' animate='animate'  transition={{duration:.5, delay:1}}><Link  href='/'>Home</Link></motion.div></motion.div>
   </motion.div>)
 
+    const handleLogOut = () =>{
+      logOut()
+    }
 
   return (
     <motion.div variants={rotate} initial='initial' animate='animate' transition={{duration:1}} className="navbar shadow-lg">
@@ -51,8 +54,11 @@ function Navbar() {
   <div className="navbar-end">
     {!user?
     <Link  to='/logIn' ><motion.span initial={{backgroundColor: '#F84E4500'}} animate={{backgroundColor:'#F84E45'}} transition={{delay:2.8}} className="btn bg-[#F84E45] text-white hover:shadow-2xl hover:shadow-[#F84E45] hover:bg-[#F84E45]">Log In</motion.span></Link>:
-      <div>Hi {user.displayName}</div>
-    }
+      <div className="flex items-center">
+        <div>Hi {user.displayName}</div>
+      <button onClick={handleLogOut} className="btn bg-[#F84E45] text-white hover:shadow-2xl hover:shadow-[#F84E45] hover:bg-[#F84E45]">LogOut</button>
+      </div>
+}
   </div>
 </motion.div>
   );

@@ -1,8 +1,15 @@
+import useUserInfo from "../Hooks/useUserInfo";
 
 const Users = () => {
+    const [users, refetch] = useUserInfo()
+
     return (
         <div>
-            <h1>Users</h1>
+            <div>
+                {users.map(user=>
+                    <div key={user._id}></div>
+                    )}
+            </div>
         </div>
     );
 };

@@ -19,7 +19,7 @@ const LogIn = () => {
         signInUser(email, password)
         .then(()=>{    
             
-                Swal.fire({position: "top-end", icon: "success", title: "Welcome to Harmony Haven", showConfirmButton: false, timer: 1500});
+                Swal.fire({position: "top-end", icon: "success", title: "Welcome to Weather Cast", showConfirmButton: false, timer: 1500});
                 e.target.reset()
                 navigate(location?.state? location.state :'/')
             

@@ -1,13 +1,16 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth"
 import { createContext, useEffect, useState } from "react"
-import auth from "../../firebase.config"
-// import useAxiosPublic from "../Hooks/useAxiosPublic"
+import auth, { db } from "../../firebase.config"
+import { addDoc, collection, onSnapshot, snapshotEqual } from "firebase/firestore";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
+
 
 export const AuthContext = createContext(null)
 const AuthProvider = ({children}) => {
-    // const axiosPublic = useAxiosPublic()
+    const axiosPublic = useAxiosPublic()
     const [loading, setLoading] =useState(true)
     const [user, setUser] =useState(null)
+    const [usersCol, setUsersCol] = useState([])
 
     const createUser = ( email, password) =>{
         setLoading(true)
@@ -58,7 +61,7 @@ const AuthProvider = ({children}) => {
         return()=>{
           unSubscribe()  
         }
-    },[user?.email])
+    },[user?.email, axiosPublic])
 
     const authInfo = { user,loading, createUser, signInUser,signInPop, logOut }
 
