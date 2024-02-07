@@ -150,7 +150,7 @@ const WeatherCard = (weather)=>{
 
                             </div>
                             }
-                            <div className="col-span-1">
+                            <div className="col-span-1 bg-gray-50">
                                 <Users></Users>
                             </div>
                         </div>  

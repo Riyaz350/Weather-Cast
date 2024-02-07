@@ -101,7 +101,7 @@ async function run() {
     const filter = { email: userEmail };
     const updateDoc = {
         $set: {
-            role: req.body.role,
+            status: req.body.status,
         }
 
     };

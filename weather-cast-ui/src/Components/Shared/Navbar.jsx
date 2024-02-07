@@ -3,10 +3,15 @@ import { motion } from "framer-motion"
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../../Authentication/Authprovider"
+import useAxiosPublic from "../../Hooks/useAxiosPublic"
+import useUserInfo from "../../Hooks/useUserInfo"
 
 function Navbar() {
 
   const {user, logOut} = useContext(AuthContext)
+  const axiosPublic = useAxiosPublic()
+  const email = user?.email
+  const [,,refetch] = useUserInfo()
   
   const popUp = {
     initial:{borderColor: "#F84E4500"},
@@ -31,6 +36,10 @@ function Navbar() {
 
     const handleLogOut = () =>{
       logOut()
+      axiosPublic.patch(`/users/${email}` ,  {status: 'Offline'} )
+        .then(()=>{
+            refetch()
+        })
     }
 
   return (
