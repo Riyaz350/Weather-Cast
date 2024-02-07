@@ -6,7 +6,7 @@ import "echarts/i18n/langFR";
 import { CiClock2 } from "react-icons/ci";
 import CountUp from 'react-countup';
 import { motion } from "framer-motion"
-import Users from "./Users";
+import Users from "./UserData/Users";
 
 const WeatherCard = (weather)=>{
     
@@ -145,9 +145,8 @@ const WeatherCard = (weather)=>{
                                 </div>
                                 {/* <ReactECharts option={option} style={{ height: 400 }} opts={{ locale: 'FR' }}/>; */}
                             </div> :
-                            <div className="col-span-3 bg-white rounded-lg p-5">
-                            <h1 className="text-5xl text-center">Please search your city</h1>
-
+                            <div className="col-span-3 text-3xl text-center bg-white rounded-lg p-5">
+                                <h1>Please Search Your City/Country</h1>
                             </div>
                             }
                             <div className="col-span-1 bg-gray-50">

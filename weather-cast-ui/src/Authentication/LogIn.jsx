@@ -2,10 +2,12 @@ import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "./Authprovider";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 
 
 const LogIn = () => {
+    const axiosPublic = useAxiosPublic()
     const {user} = useContext(AuthContext)
     const {signInUser} =useContext(AuthContext)
     const navigate = useNavigate()
@@ -22,6 +24,9 @@ const LogIn = () => {
                 Swal.fire({position: "top-end", icon: "success", title: "Welcome to Weather Cast", showConfirmButton: false, timer: 1500});
                 e.target.reset()
                 navigate(location?.state? location.state :'/')
+
+                axiosPublic.patch(`/users/${email}` ,  {status: 'Online'} )
+                .then(()=>{})
             
             })
         .catch((error)=>{

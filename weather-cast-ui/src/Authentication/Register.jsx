@@ -13,6 +13,11 @@ const Register = () => {
     const [email, setEmail] =useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
+    const date =new Date()
+    const day = date.getDate()
+    const month = date.getMonth()
+    const year = date.getFullYear()
+    const joinDate = day+'/'+month+'/'+year
 
 const {createUser, logOut} =useContext(AuthContext)
 
@@ -36,7 +41,7 @@ const handleEmailRegister = e=>{
         e.target.reset()
         Swal.fire({position: "top-end", icon: "success", title: "Please Sign In again", showConfirmButton: false, timer: 1500});
 
-        const userInfo = {email:email, name:name,   status:'offline'}
+        const userInfo = {email:email, name:name,   status:'offline', joinDate:joinDate}
         axiosPublic.post('/users', userInfo )
         .then()
         
