@@ -9,7 +9,7 @@ const LandingPage = () => {
     const [lon, setLon] = useState('')
 
     const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
-    const geo = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
+    const geo = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
 
     const handleSearch = () =>{
         fetch(`${api}`)

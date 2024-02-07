@@ -3,6 +3,7 @@ import useUserInfo from "../../Hooks/useUserInfo";
 import { AuthContext } from "../../Authentication/Authprovider";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const Users = () => {
     const axiosPublic = useAxiosPublic()
@@ -47,6 +48,11 @@ const Users = () => {
       return () => clearInterval(intervalId);
     }, []);
 
+    const handleOffline=()=>{
+      axiosPublic.patch(`/users/${email}` ,  {status: 'Offline'} )
+      .then(()=>{})
+    }
+
     const handleStatus=()=>{
       axiosPublic.patch(`/users/${email}` ,  {status: statusUpdate} )
       .then(()=>{})
@@ -55,13 +61,14 @@ const Users = () => {
     return (
         <div>
           <div>
-
+          {user &&
+          
           <div className="text-xl border-2 border-black">
           <h1 >Your Status</h1>
 
           <div  className="grid py-5 grid-cols-2  items-center ">
                 <h1 className="text-xl">{isUser?.name}</h1>
-                <h1 className={`${isUser?.status === 'Online' ? 'text-green-500' : isUser?.status === 'Offline' ? 'text-red-500' : 'text-cyan-500'}`}>{isUser?.status}</h1>
+                <h1 className={`${isUser?.status === 'Online' ? 'text-green-500' : isUser?.status === 'Offline' ? 'text-red-500' : 'text-cyan-500'}`}>{isUser?.status}{isUser?.status !== 'Offline' ? <span onClick={handleOffline} className="cursor-pointer text-black text-sm border-2 border-black ml-2"> Appear Offline</span> :<span></span>}</h1>
                 <h1>Update status:</h1>
                 <div className="flex gap-2">
                 <input onChange={e=>setStatusUpdate(e.target.value)} type="text" name="status" placeholder="status" className="border-2 border-gray-500 p-1 w-[100px] overflow-scroll" />
@@ -69,6 +76,9 @@ const Users = () => {
                 </div>
               </div>
           </div>
+          
+          }
+
 
           </div>
             <div className="bg-gray-50 rounded-lg">
@@ -84,12 +94,14 @@ const Users = () => {
                     </thead>
                     <tbody>
                     {
-                    notUser.map(user =>
-                    <tr key={user._id} className="border-2 border-black  rounded-lg ">
-                      <th>{user?.name}</th>
-                      <th>{user?.joinDate}</th>
-                      <th className={`${user?.status === 'Online' ? 'text-green-500' : user?.status === 'Offline' ? 'text-red-500' : 'text-cyan-500'}`}>{user?.status}</th>
+                    notUser.map(userr =>
+                    <tr key={userr._id} className="border-2 border-black  rounded-lg ">
+                      <th>{userr?.name}</th>
+                      <th>{userr?.joinDate}</th>
+                      <th className={`${userr?.status === 'Online' ? 'text-green-500' : userr?.status === 'Offline' ? 'text-red-500' : 'text-cyan-500'}`}>{userr?.status}</th>
+                      {user && 
                       <th onClick={()=>handleDelete(user?.email)} className="btn bg-[#F84E45] text-white hover:shadow-lg hover:shadow-[#F84E4540] hover:bg-[#F84E45]">Delete</th>
+                      }
                   </tr>)
                     }
                     </tbody>

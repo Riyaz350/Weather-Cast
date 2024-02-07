@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoWaterOutline } from "react-icons/io5";
 import { MdOutlineAir } from "react-icons/md";
 import { CiClock2 } from "react-icons/ci";
 import CountUp from 'react-countup';
 import { motion } from "framer-motion"
 import Users from "./UserData/Users";
+import { AuthContext } from "../Authentication/Authprovider";
+import { Link } from "react-router-dom";
 
 const WeatherCard = (weather)=>{
     
@@ -15,6 +17,7 @@ const WeatherCard = (weather)=>{
     const [hourlyData, setHourlyData] = useState('')
     const [hourlyTimes, setHourlyTimes] = useState('')
     const [hourlyTemp, setHourlyTemp] = useState([])
+    const {user} = useContext(AuthContext)
     const lat = weather.lat
     const lon = weather.lon
     const hourly = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=ab2cfeb324b2ee6f0e127aa3c3d1168d`
@@ -67,7 +70,9 @@ const WeatherCard = (weather)=>{
         }
     },[weather.weather, hourly, weather.lon, weather.lat, hourlyData?.list])
             
-        
+    if(user){
+
+    
             return(
                 <div className="max-w-7xl mx-auto shadow-lg rounded-lg ">
                         <div className={` `}>
@@ -104,7 +109,7 @@ const WeatherCard = (weather)=>{
                             <div className="col-span-3 text-3xl text-center bg-white rounded-lg p-5">
                                 <h1>Please Search Your City/Country</h1>
                             </div>
-                            }
+                            } 
                             <div className="col-span-1 bg-gray-50">
                                 <Users></Users>
                             </div>
@@ -114,6 +119,20 @@ const WeatherCard = (weather)=>{
                 
                 </div>
             )
+            }else{
+                return(
+                    <div className="md:grid grid-cols-2 bg-white">
+                        <div className="p-10 flex flex-col justify-center">
+                        <h1 className="text-center text-xl md:text-3xl lg:text-5xl">Please Log In to see weather</h1>
+                        <Link to='/logIn' className="w-fit mx-auto btn bg-[#F84E45] text-white hover:shadow-lg hover:shadow-[#F84E4540] hover:bg-[#F84E45]">Get Started</Link>
+                        </div>
+
+                        <div>
+                            <img className="w-1/2 mx-auto" src="https://i.ibb.co/Lgj0Kww/3366845.jpg" alt="" />
+                        </div>
+                    </div>
+                )
+            }
         
         
         
